@@ -1,0 +1,20 @@
+Dependencies for Project 'stm32g431_pure_sine_wave_inverter', Target 'STM32G431CBU': (DO NOT MODIFY !)
+CompilerVersion: 6220000::V6.22::ARMCLANG
+F (.\spwm.h)(0x694F74EF)()
+F (.\cdefs.h)(0x694F744A)()
+F (.\main.c)(0x694F6E5F)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wall -Wextra -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier-I./RTE/_STM32G431CBU-IC:/Keil/ARM/CMSIS/6.2.0/CMSIS/Core/Include-D__UVISION_VERSION="541" -DSTM32G431xx -D_RTE_-o ./objects/main.o -MMD)
+I (stm32g431xx.h)(0x691EE25A)
+I (C:\Keil\ARM\CMSIS\6.2.0\CMSIS\Core\Include\core_cm4.h)(0x691EDF92)
+I (system_stm32g4xx.h)(0x691EE241)
+F (.\spwm.c)(0x694F7B2D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wall -Wextra -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier-I./RTE/_STM32G431CBU-IC:/Keil/ARM/CMSIS/6.2.0/CMSIS/Core/Include-D__UVISION_VERSION="541" -DSTM32G431xx -D_RTE_-o ./objects/spwm.o -MMD)
+I (stm32g431xx.h)(0x691EE25A)
+I (C:\Keil\ARM\CMSIS\6.2.0\CMSIS\Core\Include\core_cm4.h)(0x691EDF92)
+I (system_stm32g4xx.h)(0x691EE241)
+I (cdefs.h)(0x694F744A)
+I (spwm.h)(0x694F74EF)
+F (.\RTE\Device\startup_stm32g431xx.s)(0x691EE43F)(--target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -masm=auto  -Wa,armasm,--diag_suppress=A1950W -c-gdwarf-4-I./RTE/_STM32G431CBU-IC:/Keil/ARM/CMSIS/6.2.0/CMSIS/Core/Include-Wa,armasm,--pd,"__UVISION_VERSION SETA 541" -Wa,armasm,--pd,"STM32G431xx SETA 1" -Wa,armasm,--pd,"_RTE_ SETA 1"-o ./objects/startup_stm32g431xx.o)
+F (.\RTE\Device\system_stm32g4xx.c)(0x691EE511)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wall -Wextra -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier-I./RTE/_STM32G431CBU-IC:/Keil/ARM/CMSIS/6.2.0/CMSIS/Core/Include-D__UVISION_VERSION="541" -DSTM32G431xx -D_RTE_-o ./objects/system_stm32g4xx.o -MMD)
+I (RTE\Device\stm32g4xx.h)(0x691EE24E)
+I (RTE\Device\stm32g431xx.h)(0x691EE25A)
+I (C:\Keil\ARM\CMSIS\6.2.0\CMSIS\Core\Include\core_cm4.h)(0x691EDF92)
+I (RTE\Device\system_stm32g4xx.h)(0x691EE241)
