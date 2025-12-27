@@ -17,7 +17,7 @@
 void     SPWM_GPIO_Init(void);
 void     SPWM_Timer_Init(void);
 void     SPWM_Sine_Table_Init(void);
-void     SPWM_Set_Val(uint16_t u, uint16_t v);
+void     SPWM_Set_Val(uint16_t out1, uint16_t out2);
 void     SPWM_Update(void);
 
 #endif
