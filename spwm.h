@@ -14,7 +14,7 @@
 #define  SPWM_PHASE_SW_CYCLE         10
 #define  SPWM_POWER_DIV_FACT         1
 #define  SPWM_SVPWM_STEP_SIZE        1
-#define  SPWM_SOFT_START_STEP_SIZE   1
+#define  SPWM_SOFT_START_STEP_SIZE   4
 
 
 
