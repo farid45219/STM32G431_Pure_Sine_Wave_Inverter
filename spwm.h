@@ -7,10 +7,16 @@
 
 
 
-#define  SPWM_INTERRUPT_RATE    10000
-#define  SPWM_CARRIER_FREQ_HZ   20000
-#define  SPWM_POWER_DIV_FACT    1
-#define  SPWM_SVPWM_STEP_SIZE   1
+
+
+#define  SPWM_INTERRUPT_RATE         10000
+#define  SPWM_CARRIER_FREQ_HZ        20000
+#define  SPWM_PHASE_SW_CYCLE         10
+#define  SPWM_POWER_DIV_FACT         1
+#define  SPWM_SVPWM_STEP_SIZE        1
+#define  SPWM_SOFT_START_STEP_SIZE   1
+
+
 
 
 void     SPWM_Struct_Init(void);

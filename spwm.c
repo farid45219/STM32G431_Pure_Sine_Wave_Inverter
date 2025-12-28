@@ -12,6 +12,11 @@ typedef struct swpm_t{
 	volatile uint16_t Angle;
 	volatile uint16_t Out1Config;
 	volatile uint16_t Out2Config;
+	volatile uint16_t SoftStart;
+	volatile uint16_t SoftDutyIndex;
+	volatile uint16_t SoftDutySine[100];
+	volatile uint16_t SoftDutyPercent;
+	volatile uint16_t SoftSine[2];
 }spwm_t;
 
 
@@ -22,11 +27,19 @@ void SPWM_Struct_Init(void){
 	for (uint16_t i = 0; i < 360; i++){
 		SPWM.SineTable[i] = 0;
 	}
+	for (uint16_t i = 0; i < 100; i++){
+		SPWM.SoftDutySine[i] = 0;
+	}
 	SPWM.Angle = 0;
 	SPWM.Output1 = 0;
 	SPWM.Output2 = 0;
 	SPWM.Out1Config = FALSE;
 	SPWM.Out2Config = FALSE;
+	SPWM.SoftStart = TRUE;
+	SPWM.SoftDutyIndex = 0;
+	SPWM.SoftDutyPercent = 0;
+	SPWM.SoftSine[0] = 0;
+	SPWM.SoftSine[1] = 0;
 }
 
 
@@ -36,24 +49,32 @@ void SPWM_GPIO_Init(void){
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN;
 	
 	//Config OUT1H->PA8->TIM1_CH1->AFSEL8_AF6
+	GPIOA->PUPDR &=~GPIO_PUPDR_PUPD8_Msk;
+	GPIOA->PUPDR |= GPIO_PUPDR_PUPD8_1;
 	GPIOA->ODR   &=~GPIO_ODR_OD8;
 	GPIOA->MODER &=~GPIO_MODER_MODE8;
 	GPIOA->AFR[1]&=~GPIO_AFRH_AFSEL8_Msk;
 	GPIOA->AFR[1]|= 6 << GPIO_AFRH_AFSEL8_Pos;
 	
 	//Config OUT1L->PC13->TIM1_CH1N->AFSEL13_AF4
+	GPIOC->PUPDR &=~GPIO_PUPDR_PUPD13_Msk;
+	GPIOC->PUPDR |= GPIO_PUPDR_PUPD13_1;
 	GPIOC->ODR   &=~GPIO_ODR_OD13;
 	GPIOC->MODER &=~GPIO_MODER_MODE13;
 	GPIOC->AFR[1]&=~GPIO_AFRH_AFSEL13_Msk;
 	GPIOC->AFR[1]|= 4 << GPIO_AFRH_AFSEL13_Pos;
 	
 	//Config OUT2H->PA9->TIM1_CH2->AFSEL9_AF6
+	GPIOA->PUPDR &=~GPIO_PUPDR_PUPD9_Msk;
+	GPIOA->PUPDR |= GPIO_PUPDR_PUPD9_1;
 	GPIOA->ODR   &=~GPIO_ODR_OD9;
 	GPIOA->MODER &=~GPIO_MODER_MODE9;
 	GPIOA->AFR[1]&=~GPIO_AFRH_AFSEL9_Msk;
 	GPIOA->AFR[1]|= 6 << GPIO_AFRH_AFSEL9_Pos;
 	
 	//Config OUT2L>PA12->TIM1_CH2N->AFSEL12_AF6
+	GPIOA->PUPDR &=~GPIO_PUPDR_PUPD12_Msk;
+	GPIOA->PUPDR |= GPIO_PUPDR_PUPD12_1;
 	GPIOA->ODR   &=~GPIO_ODR_OD12;
 	GPIOA->MODER &=~GPIO_MODER_MODE12;
 	GPIOA->AFR[1]&=~GPIO_AFRH_AFSEL12_Msk;
@@ -69,13 +90,13 @@ void SPWM_PWM_Timer_Init(void){
 	TIM1->CR1    |= TIM_CR1_ARPE;
 	
 	//Config TIM1_CH1
-	TIM1->CCR1    = 0;
+	TIM1->CCR1    = 100;
 	TIM1->CCMR1  &=~TIM_CCMR1_OC1M;
 	TIM1->CCMR1  |= (6 << TIM_CCMR1_OC1M_Pos);
 	TIM1->CCMR1  |= TIM_CCMR1_OC1PE;
 	
 	//Config TIM1_CH2
-	TIM1->CCR2    = 0;
+	TIM1->CCR2    = 200;
 	TIM1->CCMR1  &=~TIM_CCMR1_OC2M;
 	TIM1->CCMR1  |= (6 << TIM_CCMR1_OC2M_Pos);
 	TIM1->CCMR1  |= TIM_CCMR1_OC2PE;
@@ -85,11 +106,9 @@ void SPWM_PWM_Timer_Init(void){
 	TIM1->CCER   |= TIM_CCER_CC2E | TIM_CCER_CC2NE;
   
 	//Config dead time
-	TIM1->BDTR   |= (50 << TIM_BDTR_DTG_Pos);
+	TIM1->BDTR   |= (11 << TIM_BDTR_DTG_Pos);
 	TIM1->BDTR   |= TIM_BDTR_MOE;
 	
-	//Enable counter
-	TIM1->CR1    |= TIM_CR1_CEN;
 	
 	//Config OUT1H->PA8->TIM1_CH1->AFSEL8_AF6
   GPIOA->MODER |= GPIO_MODER_MODE8_1;
@@ -102,6 +121,9 @@ void SPWM_PWM_Timer_Init(void){
 	
 	//Config OUT2L->PA12->TIM1_CH2N->AFSEL12_AF6
   GPIOA->MODER |= GPIO_MODER_MODE12_1;
+	
+	//Enable counter
+	TIM1->CR1    |= TIM_CR1_CEN;
 }
 
 
@@ -120,7 +142,7 @@ void SPWM_Sequencer_Timer_Init(uint32_t UpdateRateHz){
 
 
 void SPWM_Sine_Table_Init(void){
-	uint16_t arr_max;
+	uint16_t max_val;
 	
 	//clear whole table
 	for(int i = 0; i <= 360; i++){
@@ -130,9 +152,15 @@ void SPWM_Sine_Table_Init(void){
 	//assign sine table values
 	for(int i = 0; i <= 179; i++){
     float s = sinf(i * 3.14159f / 180.0f);
-		arr_max = TIM1->ARR - 20;
-		arr_max /= SPWM_POWER_DIV_FACT;
-    SPWM.SineTable[i] = (uint16_t)(s * arr_max);
+		max_val = TIM1->ARR - 50;
+		max_val /= SPWM_POWER_DIV_FACT;
+    SPWM.SineTable[i] = (uint16_t)(s * max_val);
+  }
+	
+	for(int i = 0; i <= 90; i++){
+		float s = sinf(i * 3.14159f / 180.0f);
+		max_val = 100;
+    SPWM.SoftDutySine[i] = (uint16_t)(s * max_val);
   }
 	
 	for(int i = 180; i <= 359; i++){
@@ -145,7 +173,7 @@ void SPWM_Sine_Table_Init(void){
 void SPWM_Output1H_General_Purpose_Output_Low(void){
 	//Config OUT1H->Output Low
 	GPIOA->MODER &=~GPIO_MODER_MODE8;
-	GPIOA->ODR   &=~GPIO_ODR_OD8;
+	GPIOA->BSRR  |= GPIO_BSRR_BR9;
   GPIOA->MODER |= GPIO_MODER_MODE8_0;
 }
 
@@ -153,7 +181,7 @@ void SPWM_Output1H_General_Purpose_Output_Low(void){
 void SPWM_Output1L_General_Purpose_Output_Low(void){
 	//Config OUT1L->Output Low
 	GPIOC->MODER &=~GPIO_MODER_MODE13;
-	GPIOC->ODR   &=~GPIO_ODR_OD13;
+	GPIOC->BSRR  |= GPIO_BSRR_BR13;
   GPIOC->MODER |= GPIO_MODER_MODE13_0;
 }
 
@@ -161,15 +189,16 @@ void SPWM_Output1L_General_Purpose_Output_Low(void){
 void SPWM_Output2H_General_Purpose_Output_Low(void){
 	//Config OUT2H->Output Low
 	GPIOA->MODER &=~GPIO_MODER_MODE9;
-	GPIOA->ODR   &=~GPIO_ODR_OD9;
+	GPIOA->BSRR  |= GPIO_BSRR_BR9;
   GPIOA->MODER |= GPIO_MODER_MODE9_0;
 }
 
 
 void SPWM_Output2L_General_Purpose_Output_Low(void){
 	//Config OUT2L->Output Low
-	GPIOA->ODR   &=~GPIO_ODR_OD12;
 	GPIOA->MODER &=~GPIO_MODER_MODE12;
+	GPIOA->BSRR  |= GPIO_BSRR_BR12;
+	GPIOA->ODR   &=~GPIO_ODR_OD12;
   GPIOA->MODER |= GPIO_MODER_MODE12_0;
 }
 
@@ -180,7 +209,7 @@ void SPWM_Output2L_General_Purpose_Output_Low(void){
 void SPWM_Output1H_General_Purpose_Output_High(void){
 	//Config OUT1H->Output Low
 	GPIOA->MODER &=~GPIO_MODER_MODE8;
-	GPIOA->ODR   |= GPIO_ODR_OD8;
+	GPIOA->BSRR  |= GPIO_BSRR_BS8;
   GPIOA->MODER |= GPIO_MODER_MODE8_0;
 }
 
@@ -188,15 +217,15 @@ void SPWM_Output1H_General_Purpose_Output_High(void){
 void SPWM_Output1L_General_Purpose_Output_High(void){
 	//Config OUT1L->Output Low
 	GPIOC->MODER &=~GPIO_MODER_MODE13;
-	GPIOC->ODR   |= GPIO_ODR_OD13;
+	GPIOC->BSRR  |= GPIO_BSRR_BS13;
   GPIOC->MODER |= GPIO_MODER_MODE13_0;
 }
 
 
 void SPWM_Output2H_General_Purpose_Output_High(void){
 	//Config OUT2H->Output Low
-	GPIOA->ODR   |= GPIO_ODR_OD9;
 	GPIOA->MODER &=~GPIO_MODER_MODE9;
+	GPIOA->BSRR  |= GPIO_BSRR_BS9;
   GPIOA->MODER |= GPIO_MODER_MODE9_0;
 }
 
@@ -204,7 +233,7 @@ void SPWM_Output2H_General_Purpose_Output_High(void){
 void SPWM_Output2L_General_Purpose_Output_High(void){
 	//Config OUT2L->Output Low
 	GPIOA->MODER &=~GPIO_MODER_MODE12;
-	GPIOA->ODR   |= GPIO_ODR_OD12;
+	GPIOA->BSRR  |= GPIO_BSRR_BS12;
   GPIOA->MODER |= GPIO_MODER_MODE12_0;
 }
 
@@ -256,8 +285,17 @@ void SPWM_All_Output_Disable(void){
 
 
 void SPWM_Set_Val(uint16_t out1, uint16_t out2){
-	TIM1->CCR1 = SPWM.SineTable[out1];
-	TIM1->CCR2 = SPWM.SineTable[out2];
+	if(SPWM.SoftStart == TRUE){
+		SPWM.SoftDutyPercent = SPWM.SoftDutySine[SPWM.SoftDutyIndex];
+		SPWM.SoftSine[0] = (SPWM.SineTable[out1] * SPWM.SoftDutyPercent) / 100;
+		SPWM.SoftSine[1] = (SPWM.SineTable[out2] * SPWM.SoftDutyPercent) / 100;
+		TIM1->CCR1 = SPWM.SoftSine[0];
+	  TIM1->CCR2 = SPWM.SoftSine[1];
+	}
+	else{
+	  TIM1->CCR1 = SPWM.SineTable[out1];
+	  TIM1->CCR2 = SPWM.SineTable[out2];
+	}
 }
 
 
@@ -274,14 +312,17 @@ void SPWM_Update(void){
 			//Disable all output
 			SPWM_All_Output_Disable();
 			//Blanking time 
-			for(uint32_t i=0; i<100; i++){
+			for(uint32_t i=0; i<SPWM_PHASE_SW_CYCLE; i++){
 			  __NOP();
 			}
+			
+			//Static on in output 2
+			SPWM_Output2L_General_Purpose_Output_High();
+			
 			//Complementary PWM enable
 			SPWM_Output1H_Alternate_Function();
 			SPWM_Output1L_Alternate_Function();
-			//Static on in output 2
-			SPWM_Output2L_General_Purpose_Output_High();
+			
 			
 			SPWM.Out2Config = FALSE;
 			SPWM.Out1Config = TRUE;
@@ -296,14 +337,17 @@ void SPWM_Update(void){
 			//Disable all output
 			SPWM_All_Output_Disable();
 			//Blanking time 
-			for(uint32_t i=0; i<100; i++){
+			for(uint32_t i=0; i<SPWM_PHASE_SW_CYCLE; i++){
 			  __NOP();
 			}
+			
+			//Static on in output 1
+			SPWM_Output1L_General_Purpose_Output_High();
+			
 			//Complementary PWM enable
 			SPWM_Output2H_Alternate_Function();
 			SPWM_Output2L_Alternate_Function();
-			//Static on in output 1
-			SPWM_Output1L_General_Purpose_Output_High();
+			
 			SPWM.Out1Config = FALSE;
 			SPWM.Out2Config = TRUE;
 		}
@@ -315,8 +359,15 @@ void SPWM_Update(void){
 	SPWM.Angle += SPWM_SVPWM_STEP_SIZE;
 	if(SPWM.Angle >= 360){
 		SPWM.Angle = 0;
+		
+		if(SPWM.SoftStart == TRUE){
+		  SPWM.SoftDutyIndex += SPWM_SOFT_START_STEP_SIZE;
+		  if(SPWM.SoftDutyIndex > 90){
+				SPWM.SoftDutyIndex = 90;
+			  SPWM.SoftStart = FALSE;
+		  }
+		}
 	}
-	
 	
 	SPWM_Set_Val(SPWM.Output1, SPWM.Output2);
 }
@@ -341,5 +392,5 @@ void SPWM_Init(void){
 	SPWM_GPIO_Init();
 	SPWM_PWM_Timer_Init();
 	SPWM_Sine_Table_Init();
-	SPWM_Sequencer_Timer_Init(22000);
+	SPWM_Sequencer_Timer_Init(18001);
 }

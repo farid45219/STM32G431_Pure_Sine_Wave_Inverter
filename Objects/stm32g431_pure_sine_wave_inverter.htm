@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\stm32g431_pure_sine_wave_inverter.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\stm32g431_pure_sine_wave_inverter.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Sat Dec 27 18:29:41 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Sun Dec 28 17:57:43 2025
 <BR><P>
-<H3>Maximum Stack Usage =         92 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        100 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 __rt_entry_main &rArr; main &rArr; SPWM_Init &rArr; SPWM_Sine_Table_Init &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 <P>
@@ -231,7 +231,7 @@ Global Symbols
 <P><STRONG><a name="[a4]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[5b]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 92 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 100 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; SPWM_Init &rArr; SPWM_Sine_Table_Init &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
@@ -610,12 +610,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Update
 </UL>
 
-<P><STRONG><a name="[6f]"></a>SPWM_GPIO_Init</STRONG> (Thumb, 210 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_GPIO_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Init
+<P><STRONG><a name="[6f]"></a>SPWM_GPIO_Init</STRONG> (Thumb, 324 bytes, Stack size 8 bytes, spwm.o(.text.SPWM_GPIO_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SPWM_GPIO_Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Init
 </UL>
 
 <P><STRONG><a name="[6d]"></a>SPWM_Init</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, spwm.o(.text.SPWM_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = SPWM_Init &rArr; SPWM_Sine_Table_Init &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
+<BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = SPWM_Init &rArr; SPWM_Sine_Table_Init &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Sine_Table_Init
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Sequencer_Timer_Init
@@ -626,7 +628,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[77]"></a>SPWM_Output1H_Alternate_Function</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output1H_Alternate_Function))
+<P><STRONG><a name="[78]"></a>SPWM_Output1H_Alternate_Function</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output1H_Alternate_Function))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Update
 </UL>
 
@@ -634,11 +636,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_All_Output_Disable
 </UL>
 
-<P><STRONG><a name="[78]"></a>SPWM_Output1L_Alternate_Function</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output1L_Alternate_Function))
+<P><STRONG><a name="[79]"></a>SPWM_Output1L_Alternate_Function</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output1L_Alternate_Function))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Update
 </UL>
 
-<P><STRONG><a name="[7c]"></a>SPWM_Output1L_General_Purpose_Output_High</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output1L_General_Purpose_Output_High))
+<P><STRONG><a name="[7a]"></a>SPWM_Output1L_General_Purpose_Output_High</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output1L_General_Purpose_Output_High))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Update
 </UL>
 
@@ -646,7 +648,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_All_Output_Disable
 </UL>
 
-<P><STRONG><a name="[7a]"></a>SPWM_Output2H_Alternate_Function</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output2H_Alternate_Function))
+<P><STRONG><a name="[7b]"></a>SPWM_Output2H_Alternate_Function</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output2H_Alternate_Function))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Update
 </UL>
 
@@ -654,19 +656,19 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_All_Output_Disable
 </UL>
 
-<P><STRONG><a name="[7b]"></a>SPWM_Output2L_Alternate_Function</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output2L_Alternate_Function))
+<P><STRONG><a name="[7c]"></a>SPWM_Output2L_Alternate_Function</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output2L_Alternate_Function))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Update
 </UL>
 
-<P><STRONG><a name="[79]"></a>SPWM_Output2L_General_Purpose_Output_High</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output2L_General_Purpose_Output_High))
+<P><STRONG><a name="[77]"></a>SPWM_Output2L_General_Purpose_Output_High</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output2L_General_Purpose_Output_High))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Update
 </UL>
 
-<P><STRONG><a name="[6c]"></a>SPWM_Output2L_General_Purpose_Output_Low</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output2L_General_Purpose_Output_Low))
+<P><STRONG><a name="[6c]"></a>SPWM_Output2L_General_Purpose_Output_Low</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_Output2L_General_Purpose_Output_Low))
 <BR><BR>[Called By]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_All_Output_Disable
 </UL>
 
-<P><STRONG><a name="[70]"></a>SPWM_PWM_Timer_Init</STRONG> (Thumb, 250 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_PWM_Timer_Init))
+<P><STRONG><a name="[70]"></a>SPWM_PWM_Timer_Init</STRONG> (Thumb, 252 bytes, Stack size 0 bytes, spwm.o(.text.SPWM_PWM_Timer_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Init
 </UL>
 
@@ -679,37 +681,37 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Init
 </UL>
 
-<P><STRONG><a name="[7d]"></a>SPWM_Set_Val</STRONG> (Thumb, 58 bytes, Stack size 4 bytes, spwm.o(.text.SPWM_Set_Val))
-<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = SPWM_Set_Val
+<P><STRONG><a name="[7d]"></a>SPWM_Set_Val</STRONG> (Thumb, 198 bytes, Stack size 8 bytes, spwm.o(.text.SPWM_Set_Val))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SPWM_Set_Val
 </UL>
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Update
 </UL>
 
-<P><STRONG><a name="[71]"></a>SPWM_Sine_Table_Init</STRONG> (Thumb, 220 bytes, Stack size 32 bytes, spwm.o(.text.SPWM_Sine_Table_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = SPWM_Sine_Table_Init &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
+<P><STRONG><a name="[71]"></a>SPWM_Sine_Table_Init</STRONG> (Thumb, 328 bytes, Stack size 40 bytes, spwm.o(.text.SPWM_Sine_Table_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = SPWM_Sine_Table_Init &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sinf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Init
 </UL>
 
-<P><STRONG><a name="[6e]"></a>SPWM_Struct_Init</STRONG> (Thumb, 88 bytes, Stack size 4 bytes, spwm.o(.text.SPWM_Struct_Init))
+<P><STRONG><a name="[6e]"></a>SPWM_Struct_Init</STRONG> (Thumb, 164 bytes, Stack size 4 bytes, spwm.o(.text.SPWM_Struct_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = SPWM_Struct_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Init
 </UL>
 
-<P><STRONG><a name="[76]"></a>SPWM_Update</STRONG> (Thumb, 302 bytes, Stack size 16 bytes, spwm.o(.text.SPWM_Update))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SPWM_Update &rArr; SPWM_All_Output_Disable
+<P><STRONG><a name="[76]"></a>SPWM_Update</STRONG> (Thumb, 364 bytes, Stack size 16 bytes, spwm.o(.text.SPWM_Update))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SPWM_Update &rArr; SPWM_Set_Val
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Set_Val
 <LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_All_Output_Disable
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output2L_Alternate_Function
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output2H_Alternate_Function
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output1L_Alternate_Function
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output1H_Alternate_Function
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output2L_General_Purpose_Output_High
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output1L_General_Purpose_Output_High
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output2L_Alternate_Function
+<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output2H_Alternate_Function
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output1L_Alternate_Function
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output1H_Alternate_Function
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output2L_General_Purpose_Output_High
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Output1L_General_Purpose_Output_High
 </UL>
 <BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM4_IRQHandler
 </UL>
@@ -718,14 +720,14 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32g431xx.o(.text)
 </UL>
 <P><STRONG><a name="[27]"></a>TIM4_IRQHandler</STRONG> (Thumb, 42 bytes, Stack size 8 bytes, spwm.o(.text.TIM4_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = TIM4_IRQHandler &rArr; SPWM_Update &rArr; SPWM_All_Output_Disable
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = TIM4_IRQHandler &rArr; SPWM_Update &rArr; SPWM_Set_Val
 </UL>
 <BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Update
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32g431xx.o(RESET)
 </UL>
 <P><STRONG><a name="[5c]"></a>main</STRONG> (Thumb, 16 bytes, Stack size 16 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = main &rArr; SPWM_Init &rArr; SPWM_Sine_Table_Init &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
+<BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = main &rArr; SPWM_Init &rArr; SPWM_Sine_Table_Init &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPWM_Init
 </UL>
