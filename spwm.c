@@ -20,7 +20,7 @@ typedef struct swpm_t{
 }spwm_t;
 
 
-spwm_t SPWM;
+static spwm_t SPWM;
 
 
 void SPWM_Struct_Init(void){
@@ -143,6 +143,7 @@ void SPWM_Sequencer_Timer_Init(uint32_t UpdateRateHz){
 
 void SPWM_Sine_Table_Init(void){
 	uint16_t max_val;
+	float    sine_val;
 	
 	//clear whole table
 	for(int i = 0; i <= 360; i++){
@@ -151,16 +152,23 @@ void SPWM_Sine_Table_Init(void){
 	
 	//assign sine table values
 	for(int i = 0; i <= 179; i++){
-    float s = sinf(i * 3.14159f / 180.0f);
-		max_val = TIM1->ARR - 50;
-		max_val /= SPWM_POWER_DIV_FACT;
-    SPWM.SineTable[i] = (uint16_t)(s * max_val);
+		
+		sine_val  = (float)i;
+		sine_val *= 3.14159f;
+		sine_val /= 180.0f;
+    sine_val  = sinf(sine_val);
+		max_val   = (uint16_t)(TIM1->ARR - 50);
+		max_val  /= SPWM_POWER_DIV_FACT;
+    SPWM.SineTable[i] = (uint16_t)(sine_val * max_val);
   }
 	
 	for(int i = 0; i <= 90; i++){
-		float s = sinf(i * 3.14159f / 180.0f);
+		sine_val  = (float)i;
+		sine_val *= 3.14159f;
+		sine_val /= 180.0f;
+    sine_val  = sinf(sine_val);
 		max_val = 100;
-    SPWM.SoftDutySine[i] = (uint16_t)(s * max_val);
+    SPWM.SoftDutySine[i] = (uint16_t)(sine_val * max_val);
   }
 	
 	for(int i = 180; i <= 359; i++){
@@ -394,3 +402,6 @@ void SPWM_Init(void){
 	SPWM_Sine_Table_Init();
 	SPWM_Sequencer_Timer_Init(18001);
 }
+
+
+
